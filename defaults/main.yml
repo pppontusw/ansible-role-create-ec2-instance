@@ -1,0 +1,7 @@
+app_name: AppName
+ec2_instance_type: t2.micro
+ec2_key_name: private@ssh.key
+ec2_security_group: sg-080808
+ec2_subnet: subnet-aabbcc
+ec2_region: eu-west-1
+assign_public_ip: no
