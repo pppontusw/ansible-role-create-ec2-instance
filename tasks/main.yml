@@ -41,7 +41,7 @@
     volume_type: gp2
     delete_on_termination: "{{ec2_volume_delete_on_termination}}"
   with_items: "{{ec2.instances}}"
-  when: ec2_volume_size is defined
+  when: ec2_volume_size is defined and ec2_volume_delete_on_termination is defined
 
 - wait_for: 
     host: "{{item.private_ip}}"
