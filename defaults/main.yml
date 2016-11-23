@@ -8,5 +8,4 @@ assign_public_ip: no
 ami_id: ami-0d77397e
 
 #ec2_tags: '{"env": "prod"}'
-#ec2_volume:
-  #- size: 200
+#ec2_volume_size: 200
