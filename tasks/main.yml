@@ -1,7 +1,7 @@
 - ec2:
     key_name: "{{ec2_key_name}}"
     instance_type: "{{ec2_instance_type}}"
-    image: ami-0d77397e
+    image: "{{ami_id}}"
     group: "{{ec2_security_group}}"
     instance_tags: 
       Name: "{{app_name}}-{{ ansible_date_time.iso8601 | regex_replace('[^a-zA-Z0-9]', '-') }}"
