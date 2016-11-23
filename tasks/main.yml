@@ -26,22 +26,6 @@
 - debug:
     msg: "{{ec2}}"
 
-- ec2_tag:
-    region: "{{ec2_region}}"
-    resource: "{{item.id}}"
-    tags: "{{ec2_tags}}"
-    state: present
-  with_items: "{{ec2.instances}}"
-  when: ec2_tags is defined
-
-- ec2_vol:
-    region: "{{ec2_region}}"
-    instance: "{{ item.id }} "
-    volume_size: "{{ec2_volume_size}}"
-    volume_type: gp2
-  with_items: "{{ec2.instances}}"
-  when: ec2_volume_size is defined
-
 - wait_for: 
     host: "{{item.private_ip}}"
     port: 22
@@ -60,3 +44,18 @@
   with_items: "{{ec2.instances}}"
   when: assign_public_ip
 
+- ec2_tag:
+    region: "{{ec2_region}}"
+    resource: "{{item.id}}"
+    tags: "{{ec2_tags}}"
+    state: present
+  with_items: "{{ec2.instances}}"
+  when: ec2_tags is defined
+
+- ec2_vol:
+    region: "{{ec2_region}}"
+    instance: "{{ item.id }} "
+    volume_size: "{{ec2_volume_size}}"
+    volume_type: gp2
+  with_items: "{{ec2.instances}}"
+  when: ec2_volume_size is defined
