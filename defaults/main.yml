@@ -9,3 +9,4 @@ ami_id: ami-0d77397e
 
 #ec2_tags: '{"env": "prod"}'
 #ec2_volume_size: 200
+ec2_volume_delete_on_termination: yes
