@@ -46,7 +46,7 @@
 
 - debug:
     msg: "{{ec2_volume}}"
-  when: ec2_volume_size is defined and ec2_volume_delete_on_termination is defined
+  when: ec2_volume is defined
 
 - wait_for: 
     host: "{{item.private_ip}}"
