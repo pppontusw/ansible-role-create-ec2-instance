@@ -53,7 +53,7 @@
     snapshot: "{{ec2_volume_from_snapshot}}"
   with_items: "{{ec2.instances}}"
   register: ec2_volume2
-  when: "{{ec2_volume_size is defined and ec2_volume_delete_on_termination is defined and ec2_volume_from_snapshot is defined}}"
+  when: ec2_volume_delete_on_termination is defined and ec2_volume_from_snapshot is defined
 
 - name: combine variables
   set_fact:
