@@ -1,7 +1,7 @@
 - ec2:
     key_name: "{{ec2_key_name}}"
     instance_type: "{{ec2_instance_type}}"
-    image: ami-0d77397e
+    image: "{{ami_id}}"
     group: "{{ec2_security_group}}"
     instance_tags: 
       Name: "{{app_name}}-{{ ansible_date_time.iso8601 | regex_replace('[^a-zA-Z0-9]', '-') }}"
@@ -25,6 +25,42 @@
 
 - debug:
     msg: "{{ec2}}"
+
+- ec2_tag:
+    region: "{{ec2_region}}"
+    resource: "{{item.id}}"
+    tags: "{{ec2_tags}}"
+    state: present
+  with_items: "{{ec2.instances}}"
+  when: ec2_tags is defined
+
+- ec2_vol:
+    region: "{{ec2_region}}"
+    instance: "{{ item.id }}"
+    volume_size: "{{ec2_volume_size}}"
+    volume_type: gp2
+    delete_on_termination: "{{ec2_volume_delete_on_termination}}"
+  with_items: "{{ec2.instances}}"
+  register: ec2_volume1
+  when: ec2_volume_size is defined and ec2_volume_delete_on_termination is defined and ec2_volume_from_snapshot is not defined
+
+- ec2_vol:
+    region: "{{ec2_region}}"
+    instance: "{{ item.id }}"
+    volume_type: gp2
+    delete_on_termination: "{{ec2_volume_delete_on_termination}}"
+    snapshot: "{{ec2_volume_from_snapshot}}"
+  with_items: "{{ec2.instances}}"
+  register: ec2_volume2
+  when: ec2_volume_delete_on_termination is defined and ec2_volume_from_snapshot is defined
+
+- name: combine variables
+  set_fact:
+    ec2_volume: "{{ ec2_volume2 if ec2_volume_from_snapshot is defined else ec2_volume1 }}"  
+
+- debug:
+    msg: "{{ec2_volume}}"
+  when: ec2_volume is defined
 
 - wait_for: 
     host: "{{item.private_ip}}"
